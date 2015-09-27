@@ -23,14 +23,11 @@ package vncjdemo;
 * <hr></table></center>
 **/
 
-import gnu.vnc.awt.VNCEvents;
-import gnu.vnc.pixels.*;
-import gnu.awt.virtual.*;
-import gnu.rfb.*;
-import gnu.rfb.server.*;
+import gnu.rfb.server.RFBClient;
+import gnu.vnc.pixels.VNCPixels;
 
-import java.io.*;
-import java.util.*;
+import java.io.IOException;
+import java.util.Calendar;
 
 public class PixelModelTest extends VNCPixels
 {
