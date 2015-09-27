@@ -105,7 +105,7 @@ public class DesCipher
     /// Set the key.
     public void setKey( byte[] key )
 	{
-		if (key == null) throw new IllegalArgumenException("Invalid cipher [null]");
+		if (key == null) throw new IllegalArgumentException("Invalid cipher [null]");
     	if (key.length <= 07) throw new IllegalArgumentException("Minimal required cipher length is 7 bytes");
 
 		deskey( key, true, encryptKeys );
