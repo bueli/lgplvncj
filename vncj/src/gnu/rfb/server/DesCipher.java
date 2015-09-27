@@ -71,7 +71,6 @@ package gnu.rfb.server;
 // fine Java utilities: http://www.acme.com/java/
 
 
-import java.io.*;
 
 /// The DES encryption method.
 // <P>
@@ -106,8 +105,11 @@ public class DesCipher
     /// Set the key.
     public void setKey( byte[] key )
 	{
-	deskey( key, true, encryptKeys );
-	deskey( key, false, decryptKeys );
+		if (key == null) throw new IllegalArgumenException("Invalid cipher [null]");
+    	if (key.length <= 07) throw new IllegalArgumentException("Minimal required cipher length is 7 bytes");
+
+		deskey( key, true, encryptKeys );
+		deskey( key, false, decryptKeys );
 	}
 
     // Turn an 8-byte key into internal keys.
