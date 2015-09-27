@@ -23,12 +23,21 @@ package gnu.rfb.server;
  * <hr></table></center>
  **/
 
-import gnu.rfb.*;
-import gnu.logging.*;
-import java.net.*;
-import java.io.*;
-import java.util.*;
-import java.lang.reflect.*;
+import gnu.logging.VLogger;
+import gnu.rfb.Colour;
+import gnu.rfb.PixelFormat;
+import gnu.rfb.Rect;
+import gnu.rfb.rfb;
+
+import java.io.BufferedInputStream;
+import java.io.BufferedOutputStream;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.Socket;
+import java.util.Iterator;
+import java.util.Vector;
 
 public class RFBSocket implements RFBClient, Runnable {
     //
@@ -53,7 +62,7 @@ public class RFBSocket implements RFBClient, Runnable {
     private int preferredEncoding = rfb.EncodingHextile;
     private boolean isRunning = false;
     private boolean threadFinished = false;
-    private Vector updateQueue=new Vector();
+    private Vector<UpdateRequest> updateQueue=new Vector<>();
     private boolean updateAvailable = true;
     
 
@@ -192,7 +201,7 @@ public class RFBSocket implements RFBClient, Runnable {
         // Block until the thread has exited gracefully
         while(threadFinished == false){
             try{
-                Thread.currentThread().sleep(20);
+                Thread.sleep(20);
             }
             catch(InterruptedException x){
             }
@@ -242,7 +251,7 @@ public class RFBSocket implements RFBClient, Runnable {
                 }                    
                 if(input.available() == 0){
                     try{
-                        Thread.currentThread().sleep(10);
+                        Thread.sleep(10);
                     }
                     catch(InterruptedException x){
                     }
@@ -406,7 +415,7 @@ public class RFBSocket implements RFBClient, Runnable {
         }
     }
     private synchronized void doFrameBufferUpdate() throws IOException{
-        Iterator iter = updateQueue.iterator();
+        Iterator<UpdateRequest> iter = updateQueue.iterator();
         while(iter.hasNext()){
             UpdateRequest ur = (UpdateRequest)iter.next();
             iter.remove();

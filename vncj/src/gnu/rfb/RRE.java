@@ -31,9 +31,9 @@ package gnu.rfb;
 * <hr></table></center>
 **/
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.util.Vector;
 
 public class RRE extends Rect
 {
@@ -66,7 +66,7 @@ public class RRE extends Rect
 		pixels = copyPixels( pixels, scanline, x - offsetX, y - offsetY, w, h );
 		
 		SubRect subrect;
-		Vector vector = new Vector();
+		Vector<SubRect> vector = new Vector<>();
 		
 		int currentPixel;
 		int currentX, currentY;

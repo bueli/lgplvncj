@@ -32,9 +32,7 @@ package gnu.rfb;
 * <hr></table></center>
 **/
 
-import java.awt.*;
 import java.io.*;
-import java.util.*;
 
 public class CoRRE extends RRE
 {

@@ -32,9 +32,9 @@ package gnu.rfb;
 * <hr></table></center>
 **/
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.util.Vector;
 
 public class CoRREStub extends Rect
 {
@@ -53,7 +53,7 @@ public class CoRREStub extends Rect
 		super( x, y, w, h );
 		
 		CoRRE rect;
-		Vector vector = new Vector();
+		Vector<Rect> vector = new Vector<>();
 		
 		if( ( w <= 0xFF ) && ( h <= 0xFF ) )
 		{

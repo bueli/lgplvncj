@@ -23,11 +23,14 @@ package gnu.vnc;
 * <hr></table></center>
 **/
 
-import gnu.rfb.server.*;
+import gnu.rfb.server.DefaultRFBAuthenticator;
+import gnu.rfb.server.RFBAuthenticator;
+import gnu.rfb.server.RFBHost;
+import gnu.rfb.server.RFBServer;
 
-import vncjdemo.*;
-
-import java.util.*;
+import java.util.Enumeration;
+import java.util.MissingResourceException;
+import java.util.ResourceBundle;
 
 public class VNCHost
 {
@@ -55,11 +58,11 @@ public class VNCHost
 		
 		// Create RFB hosts and web servers
 		String key, serverClassName, displayName;
-		Class serverClass;
+		Class<? extends RFBServer> serverClass;
 		int display;
-		for( Enumeration e = properties.getKeys(); e.hasMoreElements(); )
+		for( Enumeration<String> e = properties.getKeys(); e.hasMoreElements(); )
 		{
-			key = (String) e.nextElement();
+			key = e.nextElement();
 			if( key.startsWith( "class." ) )
 			{
 				display = Integer.parseInt( key.substring( 6 ) );
@@ -70,8 +73,11 @@ public class VNCHost
 				
 				try
 				{
-					serverClass = Class.forName( serverClassName );
-					
+					 Object instance = Class.forName( serverClassName );
+					 if (instance instanceof RFBServer == false) {
+						 throw new IllegalArgumentException("Class " + serverClassName + " does not extend " + RFBServer.class.getName());
+					 }
+					 serverClass = (Class<? extends RFBServer>) instance;
 					// RFB host
 					new RFBHost( display, displayName, serverClass, authenticator );
 					

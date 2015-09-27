@@ -77,6 +77,6 @@ public class RectLibrary
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Private
 	
-	private Hashtable rects = new Hashtable();
+	private Hashtable<Integer, Rect> rects = new Hashtable<>();
 	private Rect defaultRect = null;
 }

@@ -221,8 +221,8 @@ public class VNCPixels implements RFBServer, PixelsOwner
 		return height;
 	}
 	public void updateAll() throws IOException{
-		for( Enumeration e = clients.elements(); e.hasMoreElements(); ){
-			RFBClient client = (RFBClient)e.nextElement();
+		for( Enumeration<RFBClient> e = clients.elements(); e.hasMoreElements(); ){
+			RFBClient client = e.nextElement();
 			frameBufferUpdateRequest( client, false, 0, 0, width, height );
 		}
 		

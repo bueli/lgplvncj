@@ -59,11 +59,12 @@ public class WebServer implements Runnable
 	{
 		try
 		{
-			ServerSocket serverSocket = new ServerSocket( url.getPort() );
-			while( true )
-			{
-				// Create client for each connected socket
-				new WebServerSocket( serverSocket.accept() );
+			try (ServerSocket serverSocket = new ServerSocket( url.getPort() )) {
+				while( true )
+				{
+					// Create client for each connected socket
+					new WebServerSocket( serverSocket.accept() );
+				}
 			}
 		}
 		catch( IOException x )
@@ -130,7 +131,7 @@ public class WebServer implements Runnable
 			try
 			{
 				// Read request
-				Vector request = new Vector();
+				Vector<String> request = new Vector<>();
 				String line, lineU, content = null;
 				boolean post = false;
 				int contentLength = -1;
@@ -290,7 +291,7 @@ public class WebServer implements Runnable
 			int blockSize = 4096;
 			ByteArrayOutputStream bytestream = new ByteArrayOutputStream( blockSize );
 			byte[] block = new byte[ blockSize ];
-			int bytes, totalBytes = 0;
+			int bytes = 0;
 			while( ( bytes = stream.read( block, 0, blockSize ) ) > -1 )
 			{
 				bytestream.write( block, 0, bytes );

@@ -23,11 +23,13 @@ package gnu.rfb.server;
  * <hr></table></center>
  **/
 
-import java.net.*;
-import java.io.*;
-import java.util.*;
-import java.lang.reflect.*;
-import gnu.logging.*;
+import gnu.logging.VLogger;
+
+import java.io.IOException;
+import java.lang.reflect.Constructor;
+import java.net.ServerSocket;
+import java.util.ArrayList;
+import java.util.Iterator;
 
 
 public class RFBHost implements Runnable {
@@ -40,14 +42,14 @@ public class RFBHost implements Runnable {
     private int display;
     private String displayName;
     private RFBAuthenticator authenticator;
-    private Constructor constructor;
+    private Constructor<? extends RFBServer> constructor;
     private RFBServer sharedServer = null;
     private boolean isRunning;
     private boolean threadFinished;
     private ServerSocket serverSocket;
-    private ArrayList servers = new ArrayList();
+    private ArrayList<RFBSocket> servers = new ArrayList<>();
     
-    public RFBHost( int display, String displayName, Class rfbServerClass, RFBAuthenticator authenticator ) throws NoSuchMethodException {
+    public RFBHost( int display, String displayName, Class<? extends RFBServer> rfbServerClass, RFBAuthenticator authenticator ) throws NoSuchMethodException {
         // Get constructor
         constructor = rfbServerClass.getDeclaredConstructor( new Class[] { int.class, String.class } );
         
@@ -105,14 +107,14 @@ public class RFBHost implements Runnable {
             // Block until the thread has exited gracefully
             while(threadFinished == false){
                 try{
-                    Thread.currentThread().sleep(20);
+                    Thread.sleep(20);
                 }
                 catch(InterruptedException x){
                 }
             }
             
             // now go through all of there servers that were spawned
-            Iterator iter = servers.iterator();
+            Iterator<RFBSocket> iter = servers.iterator();
             while(iter.hasNext()){
                 ((RFBSocket)iter.next()).close();
             }

@@ -109,7 +109,7 @@ public class RectFont extends RectLibrary
 	
 	public Rect[] getRects( char[] chars, boolean[] valid, int offset, int length, int originX, int originY, int xLimit )
 	{
-		Vector rects = new Vector();
+		Vector<Rect> rects = new Vector<>();
 		int x = originX;
 		int y = originY;
 		Rect rect;
@@ -152,13 +152,11 @@ public class RectFont extends RectLibrary
 	// Private
 
 	private Dimension charSize = new Dimension();
-	private PixelFormat pixelFormat;
 	private DirectColorModel colorModel;
 	
 	private void init( Font font, Dimension charSize, char[] chars, PixelFormat pixelFormat, int encoding, DirectColorModel colorModel )
 	{
 		this.charSize = charSize;
-		this.pixelFormat = pixelFormat;
 		this.colorModel = colorModel;
 		
 		// Pixel data

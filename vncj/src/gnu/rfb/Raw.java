@@ -23,8 +23,8 @@ package gnu.rfb;
 * <hr></table></center>
 **/
 
-import java.awt.*;
-import java.io.*;
+import java.io.DataOutput;
+import java.io.IOException;
 
 public class Raw extends Rect
 {

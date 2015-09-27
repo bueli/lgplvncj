@@ -23,10 +23,9 @@ package gnu.rfb.server;
 * <hr></table></center>
 **/
 
-import gnu.rfb.*;
-
-import java.util.*;
-import java.io.*;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Hashtable;
 
 public class RFBClients
 {
@@ -49,7 +48,7 @@ public class RFBClients
 	
 	public void addClient( RFBClient client )
 	{
-		clients.put( client, new Hashtable() );
+		clients.put( client, new Hashtable<String, Object>() );
 	}
 	
 	public void removeClient( RFBClient client )
@@ -60,9 +59,9 @@ public class RFBClients
 	public void closeAll()
 	{
 		RFBClient client;
-		for( Enumeration e = elements(); e.hasMoreElements(); )
+		for( Enumeration<RFBClient> e = elements(); e.hasMoreElements(); )
 		{
-			client = (RFBClient) e.nextElement();
+			client = e.nextElement();
 			try
 			{
 				client.close();
@@ -75,14 +74,14 @@ public class RFBClients
 		clients.clear();
 	}
 	
-	public Enumeration elements()
+	public Enumeration<RFBClient> elements()
 	{
 		return clients.keys();
 	}        
 	
 	public void setProperty( RFBClient client, String key, Object value )
 	{
-		Hashtable properties = (Hashtable) clients.get( client );
+		Hashtable<String, Object> properties = clients.get( client );
 		if( properties == null )
 			return;
 		
@@ -91,7 +90,7 @@ public class RFBClients
 	
 	public Object getProperty( RFBClient client, String key )
 	{
-		Hashtable properties = (Hashtable) clients.get( client );
+		Hashtable<String, Object> properties = clients.get( client );
 		if( properties == null )
 			return null;
 		
@@ -101,5 +100,5 @@ public class RFBClients
 	///////////////////////////////////////////////////////////////////////////////////////
 	// Private
 
-	Hashtable clients = new Hashtable();
+	Hashtable<RFBClient, Hashtable<String, Object>> clients = new Hashtable<>();
 }

@@ -23,16 +23,17 @@ package gnu.vnc;
  * <hr></table></center>
  **/
 
-import gnu.rfb.*;
-import gnu.rfb.server.*;
-import gnu.awt.*;
+import gnu.awt.PixelsOwner;
+import gnu.awt.Point;
+import gnu.awt.Rectangle;
+import gnu.rfb.PixelFormat;
+import gnu.rfb.Rect;
+import gnu.rfb.server.RFBClient;
+import gnu.rfb.server.RFBClients;
 
-import java.io.*;
-import java.util.*;
-import javax.swing.*;
-import java.awt.Image;
-import java.awt.Graphics;
-import java.awt.image.MemoryImageSource;
+import java.io.IOException;
+import java.util.Enumeration;
+import java.util.Vector;
 public class VNCQueue {
     //
     // Construction
@@ -103,9 +104,9 @@ public class VNCQueue {
         // Clip addition
         addition = new Rectangle( 0, 0, pixelsOwner.getPixelWidth(), pixelsOwner.getPixelHeight() ).intersection( addition );
 
-        Vector queue;
-        for( Enumeration e = clients.elements(); e.hasMoreElements(); ) {
-            queue = getQueue( (RFBClient) e.nextElement() );
+        Vector<Rectangle> queue;
+        for( Enumeration<RFBClient> e = clients.elements(); e.hasMoreElements(); ) {
+            queue = getQueue( e.nextElement() );
             addRectangle( queue, addition );
         }
     }
@@ -115,9 +116,9 @@ public class VNCQueue {
         Rectangle addition = new Rectangle( 0, 0, pixelsOwner.getPixelWidth(), pixelsOwner.getPixelHeight() );
         
         // Set all queues
-        Vector queue;
-        for( Enumeration e = clients.elements(); e.hasMoreElements(); ) {
-            queue = getQueue( (RFBClient) e.nextElement() );
+        Vector<Rectangle> queue;
+        for( Enumeration<RFBClient> e = clients.elements(); e.hasMoreElements(); ) {
+            queue = getQueue( e.nextElement() );
             synchronized( queue ) {
                 queue.removeAllElements();
                 queue.addElement( addition );
@@ -131,14 +132,14 @@ public class VNCQueue {
     
     public Rectangle[] pop( RFBClient client, Rectangle clip ) {
         //         System.err.println("DEBUG[VNCQueue]: pop()");
-        Vector queue = getQueue( client );
+        Vector<Rectangle> queue = getQueue( client );
         
         // Collect rectangles in area
-        Vector v = new Vector();
+        Vector<Rectangle> v = new Vector<>();
         Rectangle r;
         synchronized( queue ) {
-            for( Enumeration e = queue.elements(); e.hasMoreElements(); ) {
-                r = (Rectangle) e.nextElement();
+            for( Enumeration<? extends Rectangle> e = queue.elements(); e.hasMoreElements(); ) {
+                r = e.nextElement();
                 if( clip.contains( r.getLocation() ) || clip.contains( new Point( r.x + r.width, r.y + r.height ) ) ) {
                     queue.removeElement( r );
                     v.addElement( r );
@@ -158,22 +159,22 @@ public class VNCQueue {
     
     private RFBClients clients;
     
-    private Vector getQueue( RFBClient client ) {
-        Vector queue = (Vector) clients.getProperty( client, "queue" );
+    private Vector<Rectangle> getQueue( RFBClient client ) {
+        Vector<Rectangle> queue = (Vector<Rectangle>) clients.getProperty( client, "queue" );
         if( queue == null ) {
-            queue = new Vector();
+            queue = new Vector<>();
             clients.setProperty( client, "queue", queue );
         }
         
         return queue;
     }
     
-    private void addRectangle( Vector queue, Rectangle addition ) {
+    private void addRectangle( Vector<Rectangle> queue, Rectangle addition ) {
         // Ignore linear regions
         if( ( addition.width <= 0 ) || ( addition.height <= 0 ) )
             return;
         
-        Enumeration e;
+        Enumeration<Rectangle> e;
         Rectangle r;
         
         synchronized( queue ) {
@@ -276,9 +277,9 @@ public class VNCQueue {
            // System.out.println("Done Taking a snapshot");
             
             scanline=p.getPixelWidth();
-            Enumeration enumerator = clients.elements();
+            Enumeration<RFBClient> enumerator = clients.elements();
             while(enumerator.hasMoreElements()){
-                ((RFBClient)enumerator.nextElement()).setUpdateIsAvailable(true);
+                enumerator.nextElement().setUpdateIsAvailable(true);
             }
         }
     }            

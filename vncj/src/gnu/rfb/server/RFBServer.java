@@ -23,10 +23,10 @@ package gnu.rfb.server;
 * <hr></table></center>
 **/
 
-import gnu.rfb.*;
+import gnu.rfb.Colour;
+import gnu.rfb.PixelFormat;
 
-import java.io.*;
-import java.awt.event.*;
+import java.io.IOException;
 
 public interface RFBServer
 {

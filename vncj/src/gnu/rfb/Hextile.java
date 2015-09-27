@@ -60,9 +60,9 @@ package gnu.rfb;
 * <hr></table></center>
 **/
 
-import java.awt.*;
-import java.io.*;
-import java.util.*;
+import java.io.DataOutput;
+import java.io.IOException;
+import java.util.Vector;
 
 public class Hextile extends Rect
 {
@@ -99,7 +99,7 @@ public class Hextile extends Rect
 		
 		int workPixels[] = copyPixels( pixels, scanline, x - offsetX, y - offsetY, w, h );
 
-		Vector vector = new Vector();
+		Vector<Object> vector = new Vector<>();
 		int currentX, currentY;
 		int tileW, tileH;
 		Tile tile;
@@ -293,7 +293,7 @@ public class Hextile extends Rect
 		Tile tile = new Tile();
 
 		SubRect subrect;
-		Vector vector = new Vector();
+		Vector<SubRect> vector = new Vector<>();
 		
 		int currentPixel;
 		int currentX, currentY;

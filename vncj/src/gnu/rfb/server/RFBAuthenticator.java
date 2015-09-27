@@ -23,10 +23,9 @@ package gnu.rfb.server;
 * <hr></table></center>
 **/
 
-import gnu.rfb.*;
-import java.io.*;
-import java.util.*;
-import java.net.*;
+import java.io.DataInputStream;
+import java.io.DataOutputStream;
+import java.io.IOException;
 
 public interface RFBAuthenticator
 {
