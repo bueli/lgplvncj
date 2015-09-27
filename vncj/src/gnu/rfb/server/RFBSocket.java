@@ -343,13 +343,6 @@ public class RFBSocket implements RFBClient, Runnable {
         output.flush();
     }
 
-    // Authentication
-    
-    private synchronized void writeAuthScheme() throws IOException {
-        output.writeInt( authenticator.getAuthScheme( this ) );
-        output.flush();
-    }
-    
     // Messages from server to client
 
     private synchronized void writeServerMessageType( int type ) throws IOException {

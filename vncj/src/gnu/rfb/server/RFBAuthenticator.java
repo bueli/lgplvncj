@@ -29,9 +29,6 @@ import java.io.IOException;
 
 public interface RFBAuthenticator
 {
-	// Attributes
-    //public boolean authenticate(DataInputStream in, DataOutputStream out) throws IOException;
-    public boolean authenticate(DataInputStream in, DataOutputStream out, RFBSocket clientSocket) throws IOException;
-    public int getAuthScheme( RFBClient client );
+    boolean authenticate(DataInputStream in, DataOutputStream out, RFBSocket clientSocket) throws IOException;
 }
 
