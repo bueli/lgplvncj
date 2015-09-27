@@ -45,7 +45,8 @@ public class RFBSocket implements RFBClient, Runnable {
     private DataInputStream input;
     private DataOutputStream output;
 
-    private PixelFormat pixelFormat = null;
+    // Default
+    private PixelFormat pixelFormat = PixelFormat.RGB888;
     private String protocolVersionMsg = "";
     private boolean shared = true;
     private int[] encodings = new int[0];
